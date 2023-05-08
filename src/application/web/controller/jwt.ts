@@ -63,6 +63,7 @@ class LoginController {
       const user = await users(sequelize).findOne({
         where: { username: decodedToken?.sub },
       });
+      console.log(user)
 
       if (!user) {
         throw "Error session, user not valid!";
@@ -75,8 +76,9 @@ class LoginController {
           username: user.getUsername(),
           email: user.getEmail(),
           phone: user.getPhone(),
+          role: user.getRole(),
           isFirstAccess: user.getIsFirstAccess(),
-          refreshToken: user.getRefreshToken()
+          refreshToken: user.getRefreshToken(),
         },
         id: decodedToken?.sub,
         roles,

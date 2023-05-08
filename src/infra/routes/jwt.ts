@@ -18,7 +18,6 @@ router.post("/refresh", (req: Request, res: Response) => {
   })
 });
 
-
 router.get("/session", (req: Request, res: Response) => {
   const token = getTokenFromHeaders(req);
   

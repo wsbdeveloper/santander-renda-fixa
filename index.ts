@@ -4,7 +4,7 @@ import createServer from "./setup";
 import logger from "./src/helpers/logger";
 
 const app = createServer();
-const port = process.env.PORT || 8080;
+const port = process.env.PORT_BRAUM || 9444;
 
 dotenv.config({ path: ".env"})
 

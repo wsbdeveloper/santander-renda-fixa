@@ -1,0 +1,17 @@
+#! /bin/bash
+
+echo "======= SETTING UP ENVIROMENT FOR BRAUM ======="
+export NODE_ENV=production
+
+echo "WE'RE GOOD TO GO!"
+
+echo "======= BUILDING PROJECT ======="
+if [ -d "dist" ] ; then
+    rm -rf  "dist"
+    npm run build
+    mkdir -p dist/src/infra/database/config
+    cp -r src/infra/database/config/config.json dist/src/infra/database/config
+    nohup node dist/index.js &
+fi
+
+echo "BRAUM IS BATTLING!"

@@ -12,6 +12,7 @@ type User = {
   phone: string,
   refresh_token: string;
   isFirstAccess: boolean;
+  role: string;
 };
 
 type UserDeleteParams = {
@@ -31,13 +32,18 @@ class UsersService {
         where: { email: user.email },
       });
 
-      const userFind = verifyEmail?.toJSON();
+      const verifyUser = await Users(sequelize).findOne({
+        where: { username: user.username },
+      });
 
-      if (userFind?.email || userFind?.username) {
-        throw Error("Email or Username already!");
+      const userFindByEmail = verifyEmail?.toJSON();
+      const userFindByUsername = verifyUser?.toJSON();
+
+      if (userFindByEmail?.email || userFindByEmail?.username || userFindByUsername?.email || userFindByUsername?.username) {
+        throw Error("Email or Username already exists!");
       }
 
-      if (userFind !== undefined) {
+      if (userFindByEmail !== undefined || userFindByUsername !== undefined) {
         throw Error("User is up in up4tech, Try other data for your user.");
       }
 
@@ -47,7 +53,7 @@ class UsersService {
       
       return await Users(sequelize).create({ ...user });
     } catch (error) {
-      throw new Error("Erro in create users!" + error);
+      throw new Error("Error creating users!" + error);
     }
   }
 
