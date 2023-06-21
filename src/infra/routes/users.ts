@@ -8,6 +8,10 @@ router.post("/", (req: Request, res: Response) => {
   UserController.create(req, res);
 });
 
+router.post("/invite", (req: Request, res: Response) => {
+  UserController.createInvite(req, res);
+});
+
 router.patch("/:id", async (req: Request, res: Response) => {
   UserController.updateInfoUser(req, res);
 });

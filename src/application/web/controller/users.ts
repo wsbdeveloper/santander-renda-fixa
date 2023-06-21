@@ -18,6 +18,22 @@ class UserController {
     }
   }
 
+  async createInvite(req: Request, res: Response) {
+    try {
+      const userCreated = await UserService.invite(req?.body);
+      res.json({
+        user: omit(userCreated.user.toJSON(), ["password", "refresh_token"]),
+        password_raw: userCreated.password,
+      });
+    } catch (erro) {
+      res.status(400).json({
+        message:
+          "Data values is bad! Users already exist or username is up in up4tech, Try other username!",
+        error: erro,
+      });
+    }
+  }
+
   async updateInfoUser(req: Request, res: Response) {
     try {
       res.json(await UserService.updateInfosUser(req.params?.id, req?.body));
