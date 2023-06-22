@@ -96,7 +96,7 @@ class UsersService {
 
       user.password = hash;
       user.isFirstAccess = true;
-      user.role = "SELLER";
+      user.role = user.role;
 
       const newUser = await Users(sequelize).create({ ...user });
 
