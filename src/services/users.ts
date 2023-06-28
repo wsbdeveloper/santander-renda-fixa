@@ -97,6 +97,7 @@ class UsersService {
 
       user.password = hash;
       user.isFirstAccess = true;
+      user.username = user.email;
       // eslint-disable-next-line no-self-assign
       user.role = "consultant";
 
