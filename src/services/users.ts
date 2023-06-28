@@ -96,7 +96,8 @@ class UsersService {
 
       user.password = hash;
       user.isFirstAccess = true;
-      user.role = user.role;
+      // eslint-disable-next-line no-self-assign
+      user.role = "consultant";
 
       const newUser = await Users(sequelize).create({ ...user });
 
