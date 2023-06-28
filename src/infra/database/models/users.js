@@ -18,35 +18,39 @@ module.exports = (sequelize) => {
     }
 
     getRefreshToken() {
-      return this.refresh_token
+      return this.refresh_token;
     }
 
     getId() {
-      return this.id
+      return this.id;
     }
 
     getUsername() {
-      return this.username
+      return this.username;
     }
 
     getName() {
-      return this.name
+      return this.name;
     }
 
-    getEmail() { 
-      return this.email
-    } 
+    getEmail() {
+      return this.email;
+    }
 
     getPhone() {
-      return this.phone
+      return this.phone;
     }
 
     getIsFirstAccess() {
-      return this.isFirstAccess
+      return this.isFirstAccess;
     }
-    
+
     getRole() {
-      return this.role
+      return this.role;
+    }
+
+    getBussinesId() {
+      return this.bussines_id;
     }
   }
   Users.init(
@@ -64,8 +68,9 @@ module.exports = (sequelize) => {
       refresh_token: DataTypes.STRING,
       phone: DataTypes.STRING,
       company: DataTypes.STRING,
+      bussines_id: DataTypes.STRING,
       isFirstAccess: DataTypes.BOOLEAN,
-      role: DataTypes.STRING
+      role: DataTypes.STRING,
     },
     {
       sequelize,

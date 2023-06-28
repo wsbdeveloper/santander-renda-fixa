@@ -11,6 +11,7 @@ type User = {
   name: string;
   password: string;
   email: string;
+  bussines_id: string;
   phone: string;
   refresh_token: string;
   isFirstAccess: boolean;
