@@ -1,16 +1,17 @@
 import dotenv from "dotenv";
 import process from "process";
 import createServer from "./setup";
-import logger from "./src/helpers/logger";
+
+import logger from "./src/application/utils/logger";
 
 const app = createServer();
-const port = process.env.PORT_BRAUM || 9444;
+const port = process.env.PORT_BRAUM || 9443;
 
-dotenv.config({ path: ".env"})
+dotenv.config({ path: ".env" }) 
 
 if (process.env.NODE_ENV !== "test") {
   app.listen(port, async () => {
-    logger.info(`Braum is battling in port:${port}`);
+    logger.info(`renda fixa running in port:${port}`);
   });
 }
 

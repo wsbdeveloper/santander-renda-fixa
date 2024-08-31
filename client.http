@@ -1,0 +1,54 @@
+# Create the customer
+
+POST http://localhost:9443/api/customer
+Content-Type: application/json
+
+{
+  "clientId": 2,
+  "id": 100,
+  "product": {
+    "id": 101,
+    "name": "Produto Exemplo",
+    "productType": "RF-01",
+    "minIncome": 50000,
+    "maxInvestmentPercentage": 10
+  }
+}
+
+
+### get by id customer
+
+GET http://localhost:9443/api/customer/100
+Content-Type: application/json
+
+
+### update customer
+
+PUT http://localhost:9443/api/customer
+Content-Type: application/json
+
+{
+  "id": 100,
+  "customer": {
+    "clientId": 2,
+    "id": 100, 
+    "product": {
+      "id": 101,
+      "name": "Produto Exemplo atualizado",
+      "productType": "RF-01",
+      "minIncome": 50000,
+      "maxInvestmentPercentage": 10
+    }
+  }
+}
+
+### delete customer
+
+DELETE http://localhost:9443/api/customer/100
+Content-Type: application/json
+
+
+### get all
+
+GET http://localhost:9443/api/customer/all
+Content-Type: application/json

@@ -11,8 +11,6 @@ RUN npm cache clean -f
 RUN npm install
 RUN npm run build
 
-COPY ./src/infra/database/config/config.json /usr/app/svc-braum/dist/src/infra/database/config/config.json
-
 EXPOSE 8002
 
 USER node

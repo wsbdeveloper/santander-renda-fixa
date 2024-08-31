@@ -1,9 +1,8 @@
 import cors from "cors";
 import dotenv from "dotenv";
 import express, { Request, Response } from "express";
-import routes from "./src/infra/routes";
-
-import logger from "./src/helpers/logger";
+import { customerRoutes, productRoutes } from "./src/application/routes/index";
+import logger from "./src/application/utils/logger";
 
 function createServer() { 
   const app = express();
@@ -18,7 +17,8 @@ function createServer() {
   app.setMaxListeners(1)
   app.use(cors())
 
-  routes(app)
+  app.use('/api/customer', customerRoutes);
+  app.use('/api/product', productRoutes);
 
   return app
 }

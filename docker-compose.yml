@@ -14,8 +14,8 @@ services:
     ports:
       - "5433:5432"
     volumes:
-      - "braum-db:/var/lib/postgresql/data"
+      - "santander-db:/var/lib/postgresql/data"
       - "/var/run/postgres/postgres.sock:/var/run/postgres/postgres.sock"
 
 volumes:
-  braum-db:
+  santander-db:
