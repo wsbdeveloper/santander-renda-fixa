@@ -1,6 +1,7 @@
 // inMemoryDatabase.ts
 
 import Customer from "../../domain/customer";
+import logger from "./logger";
 
 class InMemoryDatabase {
     private customers: Customer[] = [];
@@ -16,7 +17,8 @@ class InMemoryDatabase {
     }
 
     getCustomerById(id: number): Customer | undefined {
-        return this.customers.find(customer => customer.id === id);
+        logger.info(this.customers).info("customers");
+        return this.customers.find(customer => Number(customer.id) === Number(id));
     }
 }
 

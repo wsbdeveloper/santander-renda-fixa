@@ -1,88 +1,95 @@
-import logger from "../../../src/application/utils/logger";
-import Customer, { Address } from "../../../src/domain/customer";
-import CustomerManager from "../../../src/domain/useCases/customer/customerManager";
-
-jest.mock("../../../src/application/utils/logger");
+import Customer from "../../../src/domain/customer";
+import { Product, ProductContract } from "../../../src/domain/product";
+import ProductManager from "../../../src/domain/useCases/product/productManager";
 
 
-describe('CustomerManager', () => {
-    let customerManager: CustomerManager;
-    let customer1: Customer;
-    let customer2: Customer;
-    let address: Address;
-    
- 
+describe("ProductManager", () => {
+    let productManager: ProductManager;
+    let mockProduct: Product;
+    let mockContract: ProductContract;
+    let mockCustomer: Customer;
+
     beforeEach(() => {
-        customerManager = new CustomerManager();
-        address = {
-            city: "sao paulo",
-            country: "brasil",
-            number: "43",
-            postalCode: "xpto",
-            state: "sao paulo",
-            street: "rua dos bobos"
-        }
-        customer1 = { id: 1, name: "John Doe", address: address, annualIncome: 1233, jurisdictionInvest: jest.fn(), products: [], type: "PF"};
-        customer2 = { id: 2, name: "Jane Doe 2", address: address, annualIncome: 1244, jurisdictionInvest: jest.fn(), products: [], type: "PJ" };
+        productManager = new ProductManager();
+
+        // Mock product and customer data
+        mockProduct = { id: 1, name: "Test Product" } as Product;
+        mockContract = { idContract: 1, productId: 1, clientId: 1, appliedValue: 5000 } as ProductContract;
+        mockCustomer = { id: 1, name: "Test Customer", type: "PF", annualIncome: 100000, document: "12345678901" } as Customer;
     });
 
-    it('should add a client', () => {
-        const addedClient = customerManager.addClient(customer1);
-        expect(addedClient).toEqual(customer1);
-        expect(customerManager.listClients()).toHaveLength(1);
+    it("should add a product", () => {
+        productManager.addProduct(mockProduct);
+
+        expect(productManager.listProducts()).toContain(mockProduct);
     });
 
-    it('should get a client by id', () => {
-        customerManager.addClient(customer1);
-        customerManager.addClient(customer2);
+    it("should get a product by ID", () => {
+        productManager.addProduct(mockProduct);
 
-        const foundClient = customerManager.getClientById(1);
-        expect(foundClient).toEqual(customer1);
+        const product = productManager.getProductById(1);
+        expect(product).toBe(mockProduct);
     });
 
-    it('should return undefined if client is not found by id', () => {
-        const foundClient = customerManager.getClientById(99);
-        expect(foundClient).toBeUndefined();
+    it("should update a product", () => {
+        productManager.addProduct(mockProduct);
+
+        const updatedProduct = { name: "Updated Product" };
+        const result = productManager.updateProduct(1, updatedProduct);
+
+        expect(result).toBe(true);
+        expect(productManager.getProductById(1)?.name).toBe("Updated Product");
     });
 
-    it('should update a client by id', () => {
-        customerManager.addClient(customer1);
-        const updatedData = { name: "John Updated" };
-        const updatedClient = customerManager.updateClient(1, updatedData);
+    it("should delete a product", () => {
+        productManager.addProduct(mockProduct);
 
-        expect(updatedClient).toMatchObject(updatedData);
-        expect(customerManager.getClientById(1)).toEqual({ ...customer1, ...updatedData });
+        const result = productManager.deleteProduct(1);
+
+        expect(result).toBe(true);
+        expect(productManager.getProductById(1)).toBeUndefined();
     });
 
-    it('should return false if client to update is not found', () => {
-        const result = customerManager.updateClient(99, { name: "Nonexistent" });
-        expect(result).toBe(false);
+    it("should create a product contract for a PF client with valid income percentage", () => {
+        productManager.addProduct(mockProduct);
+
+        const contract = productManager.createProductContract(mockContract, mockCustomer);
+
+        expect(contract).toBe(mockContract);
     });
 
-    it('should delete a client by id', () => {
-        customerManager.addClient(customer1);
-        customerManager.addClient(customer2);
-
-        const deletedClient = customerManager.deleteClient(1);
-        expect(deletedClient).toBeUndefined();
-        expect(customerManager.listClients()).toHaveLength(1);
+    it("should throw an error when trying to create a product contract with a PF client and high income percentage", () => {
+        productManager.addProduct(mockProduct);
+        productManager.addProduct(mockProduct);
+        mockContract.appliedValue = 15000; // Increase applied value to exceed the PF threshold
+        productManager.createProductContract(mockContract, mockCustomer)
+        expect(() => { productManager.createProductContract(mockContract, mockCustomer) }).toThrow("Investments not accepted for PF clients with income percentage 10% or more!");
     });
 
-    it('should return false if client to delete is not found', () => {
-        const result = customerManager.deleteClient(99);
-        expect(result).toBe(undefined);
+    it("should get contracts by client ID", () => {
+        productManager.addProduct(mockProduct);
+        productManager.createProductContract(mockContract, mockCustomer);
+
+        const contracts = productManager.getContractsByClient(1);
+
+        expect(contracts).toContain(mockContract);
     });
 
-    it('should list all clients', () => {
-        customerManager.addClient(customer1);
-        customerManager.addClient(customer2);
+    it("should cancel a contract by customer ID and contract ID", () => {
+        productManager.addProduct(mockProduct);
+        productManager.createProductContract(mockContract, mockCustomer);
 
-        const clients = customerManager.listClients();
-        expect(clients).toHaveLength(2);
+        const result = productManager.cancelContractByCustomer(1, 1);
+
+        expect(result).toBe(true);
+        expect(productManager.getContractsByClient(1)).not.toContain(mockContract);
     });
 
-    it('should log a message if no clients are found when listing', () => {
-        customerManager.listClients();
-        expect(logger.info).toHaveBeenCalledWith("No clients found.");
+    it("should return null when trying to create a contract for a non-existent product", () => {
+        expect(() => { productManager.createProductContract(mockContract, mockCustomer) }).toThrow("Product not found!");
+    });
+
+    it("should throw an error when the client is undefined", () => {
+        expect(() => { productManager.createProductContract(mockContract, undefined) }).toThrow("Product not found!");
     });
 });

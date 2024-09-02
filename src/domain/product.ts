@@ -1,6 +1,6 @@
 import Customer from "./customer";
 
-export type ProductType = 'PF' | 'PJ' | 'BOTH';
+export type ProductType = 'PF' | 'PJ';
 
 export interface Product {
     id: number;
@@ -15,7 +15,7 @@ export interface Product {
 
 export interface ProductContract {
     idContract: number,
-    clientId: number;
+    clientId: number | undefined;
     productId: number;
     appliedValue: number | undefined;
     returnRate: number; // 0.05 for 5%

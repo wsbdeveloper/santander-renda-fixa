@@ -11,7 +11,7 @@ const productsController = new ProductsController(customer);
 router.post('/pf/:idCustomer', productsController.createContractPF);
 router.post('/pj/:idCustomer', productsController.createContractPJ);
 router.get('/contracts/:idCustomer', productsController.listContractsByCustomer);
-router.delete('/cancel/:idCustomer', productsController.cancelContractCustomer);
+router.delete('/cancel/:idContract/:idCustomer', productsController.cancelContractCustomer);
 
 
 export default router;

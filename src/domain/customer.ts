@@ -9,7 +9,7 @@ export default interface Customer {
     type: ClientType;
     annualIncome: number | undefined;
     address: Address;
-    products: Product[];
+    products: Product[] | undefined;
     jurisdictionInvest(value: number): number;
 }
 

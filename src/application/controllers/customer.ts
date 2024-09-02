@@ -4,6 +4,7 @@ import CustomerService from '../services/customer/customerService';
 import { inMemoryDatabase } from '../utils/inMemoryDatabase';
 import logger from '../utils/logger';
 import CustomerRequestBody from './dtos/customerRequestBody';
+import HandlerTypeUndefined from './exceptions/handlerTypeUndefined';
 
 class CustomerController {
     private customerService: CustomerService;
@@ -19,7 +20,11 @@ class CustomerController {
             inMemoryDatabase.addCustomer(createdCustomer);
             res.status(200).send(createdCustomer);
         } catch (error) {
-            res.status(400).send("erro" + error);
+            if (error instanceof TypeError) {
+                res.status(400).send(new HandlerTypeUndefined('Ocorreu um erro ao acessar propriedades: ' + error.message));
+            } else {
+                throw error;
+            }
         }
     };
 
@@ -31,7 +36,11 @@ class CustomerController {
             if (customer == undefined) return res.status(404).send();
             res.status(200).send(customer);
         } catch (error) {
-            res.status(400).send("erro" + error);
+            if (error instanceof TypeError) {
+                res.status(400).send(new HandlerTypeUndefined('Ocorreu um erro ao acessar propriedades: ' + error.message));
+            } else {
+                throw error;
+            }
         }
     };
 
@@ -43,8 +52,11 @@ class CustomerController {
                 ? res.status(400).send({ message: "Customer not found" })
                 : res.status(200).send(stateCustomer);
         } catch (error) {
-            logger.error(error);
-            res.status(400).send("erro" + error);
+            if (error instanceof TypeError) {
+                res.status(400).send(new HandlerTypeUndefined('Ocorreu um erro ao acessar propriedades: ' + error.message));
+            } else {
+                throw error;
+            }
         }
     };
 
@@ -55,7 +67,11 @@ class CustomerController {
             logger.info("deleted? : ", deleted);
             res.status(200).send(deleted);
         } catch (error) {
-            res.status(400).send("erro" + error);
+            if (error instanceof TypeError) {
+                res.status(400).send(new HandlerTypeUndefined('Ocorreu um erro ao acessar propriedades: ' + error.message));
+            } else {
+                throw error;
+            }
         }
     };
 
