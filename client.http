@@ -1,4 +1,4 @@
-# Create the customer
+# Create the customer PF
 
 POST http://localhost:9443/api/customer
 Content-Type: application/json
@@ -6,6 +6,17 @@ Content-Type: application/json
 {
   "clientId": 2,
   "id": 100,
+	"document": "44433322245",
+	"annualIncome": 20000,
+	"type": "PF",
+	"address": {
+		"street": "Rua joao",
+    "number": "123",
+    "city": "São Paulo",
+    "state": "SP",
+    "postalCode": "01234-567",
+    "country": "Brasil"
+	},
   "product": {
     "id": 101,
     "name": "Produto Exemplo",
@@ -15,12 +26,42 @@ Content-Type: application/json
   }
 }
 
+## Create the customer PJ
+
+POST http://localhost:9443/api/costumer
+Content-Type: application/json
+
+{
+  "clientId": 2,
+  "id": 101,
+	"document": "83.282.046/0001-78",
+	"annualIncome": 20000,
+	"type": "PJ",
+	"address": {
+		"street": "Rua joao 2",
+    "number": "123",
+    "city": "São Paulo",
+    "state": "SP",
+    "postalCode": "01234-567",
+    "country": "Brasil"
+	},
+  "product": {
+    "id": 101,
+    "name": "Produto Exemplo",
+    "productType": "RF-02",
+    "minIncome": 50000,
+    "maxInvestmentPercentage": 10
+  }
+}
 
 ### get by id customer
 
 GET http://localhost:9443/api/customer/100
 Content-Type: application/json
 
+## get all customers
+GET http://localhost:9443/api/all
+Content-Type: application/json
 
 ### update customer
 
@@ -30,7 +71,7 @@ Content-Type: application/json
 {
   "id": 100,
   "customer": {
-    "clientId": 2,
+    "clientId": 3,
     "id": 100, 
     "product": {
       "id": 101,
@@ -48,7 +89,25 @@ DELETE http://localhost:9443/api/customer/100
 Content-Type: application/json
 
 
-### get all
+#------------------------------------------------------------------------------------------------------------
 
-GET http://localhost:9443/api/customer/all
+# Associate contract pf for customer 100
+
+POST http://localhost:9443/api/product/pf/100
 Content-Type: application/json
+
+# Associate contract pf for customer 101
+
+POST http://localhost:9443/api/product/pj/101
+Content-Type: application/json
+
+# List contract
+
+GET http://localhost:9443/api/product/contracts/101
+Content-Type: application/json
+
+# Cancel contract by contract id and customer id
+
+DELETE http://localhost:9443/api/product/cancel/444/101
+Content-Type: application/json
+
